@@ -1,0 +1,69 @@
+name: ${project.name}
+main: ${project.groupId}.${project.artifactId}.${project.name}Plugin
+version: ${project.version}
+author: Sudzzy
+depend: [WorldEdit]
+softdepend: [PlotSquared]
+
+commands:
+  cannondebug:
+    aliases: ["cd", "cannon", "c", "C"]
+    description: Provides the ability to debug cannons.
+    usage: "§cIncorrect syntax. For help use /cannondebug"
+    permission: cannondebug.user
+    permission-message: '§cYou do not have permission to use that command.'
+
+permissions:
+  cannondebug.clear: {default: false}
+  cannondebug.help: {default: false}
+  cannondebug.history: {default: false}
+  cannondebug.history.all: {default: false}
+  cannondebug.history.help: {default: false}
+  cannondebug.history.id: {default: false}
+  cannondebug.history.tick: {default: false}
+  cannondebug.history.order: {default: false}
+  cannondebug.maxarea.unlimited: {default: false}
+  cannondebug.maxselections.unlimited: {default: false}
+  cannondebug.page: {default: false}
+  cannondebug.preview: {default: false}
+  cannondebug.region: {default: false}
+  cannondebug.select: {default: false}
+  cannondebug.tp: {default: false}
+  cannondebug.tracking: {default: false}
+
+  cannondebug.history.*:
+    default: false
+    children:
+      cannondebug.history: true
+      cannondebug.history.all: true
+      cannondebug.history.help: true
+      cannondebug.history.id: true
+      cannondebug.history.tick: true
+      cannondebug.history.order: true
+
+  cannondebug.user:
+    default: true
+    children:
+      cannondebug.clear: true
+      cannondebug.help: true
+      cannondebug.history.*: true
+      cannondebug.maxarea.500: true
+      cannondebug.maxselections.25: true
+      cannondebug.page: true
+      cannondebug.preview: true
+      cannondebug.region: true
+      cannondebug.select: true
+      cannondebug.tp: true
+
+  cannondebug.admin:
+    default: op
+    children:
+      cannondebug.maxarea.unlimited: true
+      cannondebug.maxselections.unlimited: true
+      cannondebug.user: true
+      cannondebug.tracking: true
+
+  cannondebug.*:
+    default: false
+    children:
+      cannondebug.admin: true
