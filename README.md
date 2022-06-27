@@ -24,7 +24,7 @@
 
 ## Download
 
-[Obtain the latest compiled version of CannonDebug here](https://github.com/OriginFactions/CannonDebug/raw/master/target/CannonDebug.jar)
+Compile yourself. 
 
 ## Installation
 
