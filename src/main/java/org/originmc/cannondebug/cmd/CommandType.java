@@ -50,6 +50,8 @@ public enum CommandType {
 
     TP(CmdTp.class, new String[]{"tp"}),
 
+    CRUMBS(CmdCrumbs.class, new String[]{"crumbs", "crumb"}),
+
     TRACKING(CmdTracking.class, new String[] {"tracking"});
 
     private static final Map<String, CommandType> BY_ALIAS = new HashMap<>();

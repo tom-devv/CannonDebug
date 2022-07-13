@@ -115,7 +115,6 @@ public final class CmdHistoryID extends CommandExecutor {
                             )
 
                             .command("/cannondebug h t " + (tracker.getSpawnTick() + i))
-                            //.then(EnumUtils.getFriendlyName(tracker.getEntityType()))
                             .then(entityType)
                             .color(YELLOW)
                             .formattedTooltip(
@@ -156,8 +155,7 @@ public final class CmdHistoryID extends CommandExecutor {
                             .color(AQUA)
                             .suggest(location.getX() + " " + location.getY() + " " + location.getZ())
 
-//                            .then(" ")
-//                            .color(DARK_GRAY)
+
 
                             .then("M")
                             .formattedTooltip(
@@ -170,12 +168,7 @@ public final class CmdHistoryID extends CommandExecutor {
                             .color(LIGHT_PURPLE)
                             .suggest(velocity.getX() + " " + velocity.getY() + " " + velocity.getZ());
 
-//                            .then(" ")
-//                            .color(DARK_GRAY)
 
-
-//                            .then(" ")
-//                            .color(DARK_GRAY);
 
             if (NumberUtils.isInsideCube(location.getX()) && NumberUtils.isInsideCube(location.getZ()) ||
                 Math.abs(velocity.getX()) != 0.0 && NumberUtils.isInsideCube(location.getX()) ||

@@ -178,10 +178,10 @@ public final class CannonDebugPlugin extends JavaPlugin implements Runnable {
 
         // Do nothing if the user has too many selections.
         int max = NumberUtils.getNumericalPerm(player, "cannondebug.maxselections.");
-        if (user.getSelections().size() >= max) {
-            player.sendMessage(String.format(RED + "You have too many selections! " + GRAY + "(Max = %s)", max));
-            return;
-        }
+//        if (user.getSelections().size() >= max) {
+//            player.sendMessage(String.format(RED + "You have too many selections! " + GRAY + "(Max = %s)", max));
+//            return;
+//        }
 
         // Update users preview.
         if (user.isPreviewing()) {
