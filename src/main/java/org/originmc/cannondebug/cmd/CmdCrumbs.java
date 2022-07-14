@@ -14,6 +14,7 @@ import org.originmc.cannondebug.EntityTracker;
 import org.originmc.cannondebug.utils.NumberUtils;
 import org.originmc.cannondebug.utils.PlotSquared;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,16 +27,23 @@ public class CmdCrumbs extends CommandExecutor {
     @Override
     public boolean perform() {
 
-        if(args[1].equalsIgnoreCase("all")){
+        List<EntityTracker> entityTrackers = new ArrayList<>();
 
-        }
-        int selectionID = NumberUtils.parseInt(args[1]);
+        String selectionID = args[1].equalsIgnoreCase("all") ? "all" : args[1];
         BlockSelection blockSelection = null;
         for (BlockSelection selection : user.getSelections()) {
-            if(selection.getId() == selectionID){
+            if(selectionID.equalsIgnoreCase("all")){
+                entityTrackers.add(selection.getTracker());
                 blockSelection = selection;
+            } else {
+                if(NumberUtils.parseInt(selectionID) == selection.getId()){
+                    blockSelection = selection;
+                    entityTrackers.add(selection.getTracker());
+                }
             }
+
         }
+
 
         if(blockSelection == null) return false; //TODO add invalid BlockSelection message !
 
@@ -48,7 +56,9 @@ public class CmdCrumbs extends CommandExecutor {
             return false;
         }
 
-        List<Location> locationList = entityTracker.getLocationHistory();
+
+
+
 
         final int time;
         if(args.length > 2){
@@ -60,176 +70,173 @@ public class CmdCrumbs extends CommandExecutor {
 
 
 
-        Location explodeLocation = locationList.size() == 81 ? locationList.get(80) : null;
-        if(data == 2){
-            explodeLocation = locationList.get(locationList.size() -2);
-        }
+
 
 
         int r = data == 2 ? 1/255 : 1;
         int g = 1/255;
         int b = data == 2 ? 1 :1/255;
 
-        Location finalExplodeLocation = explodeLocation;
-        new BukkitRunnable() {
-            int t = 1;
-            public void run(){
-                t++;
-                for (int i = 1; i < locationList.size(); i++) {
 
-                    /*
-                     * Calculate the differences along the y x z axis in that order
-                     */
-
-                    double yDiff = locationList.get(i).getY() - locationList.get(i-1).getY();
-                    double xDiff = locationList.get(i).getX() - locationList.get(i-1).getX();
-                    double zDiff = locationList.get(i).getZ() - locationList.get(i-1).getZ();
-
-
-                    double y = locationList.get(i-1).getY();
-                    double x = locationList.get(i-1).getX();
-                    double z = locationList.get(i-1).getZ();
-
-                    double y1 = locationList.get(i).getY();
-                    double x1 = locationList.get(i).getX();
-
-
-                    /*
-                     * playEffect for Y values
-                     */
-                    //System.out.println(yDiff);
-                    for (int j = 0; j < yDiff; j++) {
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                       // world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-                    /*
-                     * playEffect for X values
-                     */
-                    for (int j = 0; j < xDiff ; j++) {
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                        //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-
-                    for (int l = 0; l > zDiff; l--) {
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
-                        );
-                        //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-
-
-                    /*
-                     * Opposite directions
-                     */
-
-                    /*
-                     * playEffect for Y values
-                     */
-                    for (int j = 0; j > yDiff; j--) {
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                        //world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-
-                    /*
-                     * playEffect for X values
-                     */
-                    for (int j = 0; j > xDiff ; j--) {
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                        //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-
-                    for (int l = 0; l < zDiff; l++) {
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
-                        );
-                        //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-
-
-
-
-                }
-                if(t > time){
-                    this.cancel();
-                }
-
-
-                /*
-                * Explosion Box
-                */
-
-                if(finalExplodeLocation != null) {
-                    //System.out.println(finalExplodeLocation);
-                    double x = finalExplodeLocation.getX() + 0.5;
-                    double y = finalExplodeLocation.getY();
-                    double z = finalExplodeLocation.getZ() + 0.5;
-
-                    double x1 = finalExplodeLocation.getX() - 0.5;
-                    double z1 = finalExplodeLocation.getZ() - 0.5;
-
-                    for (double i = 0; i < 1; i += 0.2) {
-
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y+1, (float) ((float) z-i), r, g, b, (float) 1, 0)
-                        );
-
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y+1, (float) ((float) z1), r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y+1, (float) ((float) z1+i), r, g, b, (float) 1, 0)
-                        );
-
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y, (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
-                        );
-
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y, (float) ((float) z1), r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y, (float) ((float) z1+i), r, g, b, (float) 1, 0)
-                        );
-
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z1), r, g, b, (float) 1, 0)
-                        );
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y+i), (float) ((float) z1), r, g, b, (float) 1, 0)
-                        );
-                    }
-                }
+        for (EntityTracker tracker: entityTrackers) {
+            List<Location> locationList = tracker.getLocationHistory();
+            Location explodeLocation = locationList.size() == 81 ? locationList.get(80) : null;
+            if(data == 2){
+                explodeLocation = locationList.get(locationList.size() -2);
             }
-        }.runTaskTimer(plugin, 0, 10L);
+            Location finalExplodeLocation = explodeLocation;
+            new BukkitRunnable() {
+                int t = 1;
+                public void run(){
+                    t++;
+                    for (int i = 1; i < locationList.size(); i++) {
+
+                        /*
+                         * Calculate the differences along the y x z axis in that order
+                         */
+
+                        double yDiff = locationList.get(i).getY() - locationList.get(i-1).getY();
+                        double xDiff = locationList.get(i).getX() - locationList.get(i-1).getX();
+                        double zDiff = locationList.get(i).getZ() - locationList.get(i-1).getZ();
 
 
-        /*
-        * Explosion Boxes
-        */
-        if(entityTracker.getEntityType().getName().equals("PrimedTnt")){
-            Location explodeLoc = locationList.get(locationList.size() -1);
+                        double y = locationList.get(i-1).getY();
+                        double x = locationList.get(i-1).getX();
+                        double z = locationList.get(i-1).getZ();
 
+                        double y1 = locationList.get(i).getY();
+                        double x1 = locationList.get(i).getX();
+
+
+                        /*
+                         * playEffect for Y values
+                         */
+                        //System.out.println(yDiff);
+                        for (int j = 0; j < yDiff; j++) {
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            // world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        }
+                        /*
+                         * playEffect for X values
+                         */
+                        for (int j = 0; j < xDiff ; j++) {
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        }
+
+                        for (int l = 0; l > zDiff; l--) {
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
+                            );
+                            //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        }
+
+
+                        /*
+                         * Opposite directions
+                         */
+
+                        /*
+                         * playEffect for Y values
+                         */
+                        for (int j = 0; j > yDiff; j--) {
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            //world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        }
+
+                        /*
+                         * playEffect for X values
+                         */
+                        for (int j = 0; j > xDiff ; j--) {
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        }
+
+                        for (int l = 0; l < zDiff; l++) {
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
+                            );
+                            //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        }
+
+
+
+
+                    }
+                    if(t > time){
+                        this.cancel();
+                    }
+
+
+                    /*
+                     * Draw Boxes
+                     */
+
+                    if(finalExplodeLocation != null) {
+                        double x = finalExplodeLocation.getX() + 0.5;
+                        double y = finalExplodeLocation.getY();
+                        double z = finalExplodeLocation.getZ() + 0.5;
+
+                        double x1 = finalExplodeLocation.getX() - 0.5;
+                        double z1 = finalExplodeLocation.getZ() - 0.5;
+
+                        for (double i = 0; i < 1; i += 0.2) {
+
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y+1, (float) ((float) z-i), r, g, b, (float) 1, 0)
+                            );
+
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y+1, (float) ((float) z1), r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y+1, (float) ((float) z1+i), r, g, b, (float) 1, 0)
+                            );
+
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y, (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
+                            );
+
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y, (float) ((float) z1), r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y, (float) ((float) z1+i), r, g, b, (float) 1, 0)
+                            );
+
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z1), r, g, b, (float) 1, 0)
+                            );
+                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y+i), (float) ((float) z1), r, g, b, (float) 1, 0)
+                            );
+                        }
+                    }
+                }
+            }.runTaskTimer(plugin, 0, 10L);
         }
+
+
 
 
         return true;
