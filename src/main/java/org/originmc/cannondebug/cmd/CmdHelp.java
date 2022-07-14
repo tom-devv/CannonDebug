@@ -35,14 +35,14 @@ import static org.bukkit.ChatColor.*;
 public final class CmdHelp extends CommandExecutor {
 
     private static final FancyPager HELP_PAGER = new FancyPager("Help for command \"/c\"", new FancyMessage[]{
-            new FancyMessage("/c c,clear ").color(AQUA).then("[history,h,selections,s] ").color(DARK_AQUA).then("Clear history or selections.").color(YELLOW),
-            new FancyMessage("/c ?,help ").color(AQUA).then("Displays this plugins' main help page.").color(YELLOW),
-            new FancyMessage("/c h,l,history,lookup ").color(AQUA).then("[?,params] ").color(DARK_AQUA).then("Lists latest profiling history.").color(YELLOW),
-            new FancyMessage("/c p,page ").color(AQUA).then("[page] ").color(DARK_AQUA).then("Go to specific page for current pager.").color(YELLOW),
-            new FancyMessage("/c v,pre,view,preview ").color(AQUA).then("Preview all selected blocks.").color(YELLOW),
-            new FancyMessage("/c r,region ").color(AQUA).then("Select all available blocks in WorldEdit region.").color(YELLOW),
-            new FancyMessage("/c s,select ").color(AQUA).then("Bind block selector tool to hand.").color(YELLOW),
-            new FancyMessage("/c crumbs,crumb ").color(AQUA).then("[id] [seconds]").color(DARK_AQUA).then("Draws a tracer of the selected entities history").color(YELLOW),
+            new FancyMessage("/c c,clear ").color(WHITE).then("[history,h,selections,s] ").color(AQUA).then("Clear history or selections.").color(YELLOW),
+            new FancyMessage("/c ?,help ").color(WHITE).then("Displays this plugins' main help page.").color(YELLOW),
+            new FancyMessage("/c h,l,history,lookup ").color(WHITE).then("[?,params] ").color(AQUA).then("Lists latest profiling history.").color(YELLOW),
+            new FancyMessage("/c p,page ").color(WHITE).then("[page] ").color(AQUA).then("Go to specific page for current pager.").color(YELLOW),
+            new FancyMessage("/c v,pre,view,preview ").color(WHITE).then("Preview all selected blocks.").color(YELLOW),
+            new FancyMessage("/c r,region ").color(WHITE).then("Select all available blocks in WorldEdit region.").color(YELLOW),
+            new FancyMessage("/c s,select ").color(WHITE).then("Bind block selector tool to hand.").color(YELLOW),
+            new FancyMessage("/c crumbs,crumb ").color(WHITE).then("[id] [seconds] ").color(AQUA).then("Draws a tracer of the selected entities history").color(YELLOW),
             new FancyMessage(""),
             new FancyMessage("This plugin was made with the intentions of providing an easy to use method of profiling cannons.").color(GREEN),
             new FancyMessage(""),

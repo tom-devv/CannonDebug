@@ -1,7 +1,11 @@
 package org.originmc.cannondebug.cmd;
 
+import net.minecraft.server.v1_8_R3.EnumParticle;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.originmc.cannondebug.BlockSelection;
@@ -49,7 +53,21 @@ public class CmdCrumbs extends CommandExecutor {
         } else {
             time = 5;
         }
+        int data = entityTracker.getEntityType().getName().equals("PrimedTnt") ? 1: 2;
 
+
+
+        Location explodeLocation = locationList.size() == 81 ? locationList.get(80) : null;
+        if(data == 2){
+            explodeLocation = locationList.get(locationList.size() -2);
+        }
+
+
+        int r = data == 2 ? 1/255 : 1;
+        int g = 1/255;
+        int b = data == 2 ? 1 :1/255;
+
+        Location finalExplodeLocation = explodeLocation;
         new BukkitRunnable() {
             int t = 1;
             public void run(){
@@ -78,22 +96,22 @@ public class CmdCrumbs extends CommandExecutor {
                      */
                     //System.out.println(yDiff);
                     for (int j = 0; j < yDiff; j++) {
-                        world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
                     /*
                      * playEffect for X values
                      */
                     for (int j = 0; j < xDiff ; j++) {
-                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
 
                     for (int j = 0; j < xDiff ; j++) {
-                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
                     for (int l = 0; l > zDiff; l--) {
-                        world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
 
@@ -105,18 +123,18 @@ public class CmdCrumbs extends CommandExecutor {
                      * playEffect for Y values
                      */
                     for (int j = 0; j > yDiff; j--) {
-                        world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
                     /*
                      * playEffect for X values
                      */
                     for (int j = 0; j > xDiff ; j--) {
-                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
                     for (int l = 0; l < zDiff; l++) {
-                        world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, 1,0,0,0,0, 30 ,30);
+                        world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
 
@@ -126,12 +144,65 @@ public class CmdCrumbs extends CommandExecutor {
                 if(t > time){
                     this.cancel();
                 }
+
+
+                /*
+                * Explosion Box
+                */
+
+                if(finalExplodeLocation != null) {
+                    //System.out.println(finalExplodeLocation);
+                    double x = finalExplodeLocation.getX() + 0.5;
+                    double y = finalExplodeLocation.getY();
+                    double z = finalExplodeLocation.getZ() + 0.5;
+
+                    double x1 = finalExplodeLocation.getX() - 0.5;
+                    double z1 = finalExplodeLocation.getZ() - 0.5;
+
+                    for (double i = 0; i < 1; i += 0.2) {
+                        PacketPlayOutWorldParticles p1 = new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(p1);
+//                        world.spigot().playEffect(new Location(world, x-i,y+1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x,y+1,z-i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//
+//
+//                        world.spigot().playEffect(new Location(world, x1+i,y+1,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x1,y+1,z1+i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//
+//                        world.spigot().playEffect(new Location(world, x-i,y,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x,y,z-i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//
+//
+//                        world.spigot().playEffect(new Location(world, x1+i,y,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x1,y,z1+i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//
+//
+//                        world.spigot().playEffect(new Location(world, x,y+i,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x1,y+i,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x,y+i,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+//                        world.spigot().playEffect(new Location(world, x1,y+i,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
+
+
+
+
+                    }
+
+
+
+
+                }
+
             }
         }.runTaskTimer(plugin, 0, 20L);
 
 
+        /*
+        * Explosion Boxes
+        */
+        if(entityTracker.getEntityType().getName().equals("PrimedTnt")){
+            Location explodeLoc = locationList.get(locationList.size() -1);
 
-
+        }
 
 
         return true;

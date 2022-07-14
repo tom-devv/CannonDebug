@@ -215,7 +215,21 @@ public final class CmdHistoryID extends CommandExecutor {
              )
              .color(WHITE)
              .command("/c tp " + tracker.getLocationHistory().get(0).getX() + " " + tracker.getLocationHistory().get(0).getY() + " " + tracker.getLocationHistory().get(0).getZ())
+            .then("]").color(DARK_GRAY)
+
+
+
+            .then(" ⎜ [").color(DARK_GRAY)
+            .then("C")
+            .color(RED)
+            .formattedTooltip(
+                    new FancyMessage("Click this to activate crumbs for 15 seconds").color(WHITE)
+            )
+            .command("/c crumbs " + id)
             .then("]").color(DARK_GRAY);
+
+
+
             lines.add(message);
 
         }
