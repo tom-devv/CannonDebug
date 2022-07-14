@@ -225,7 +225,7 @@ public final class CmdHistoryID extends CommandExecutor {
             .formattedTooltip(
                     new FancyMessage("Click this to activate crumbs for 15 seconds").color(WHITE)
             )
-            .command("/c crumbs " + id)
+            .command("/c crumbs " + id + " 15")
             .then("]").color(DARK_GRAY);
 
 

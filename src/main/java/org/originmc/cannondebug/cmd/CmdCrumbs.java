@@ -26,6 +26,9 @@ public class CmdCrumbs extends CommandExecutor {
     @Override
     public boolean perform() {
 
+        if(args[1].equalsIgnoreCase("all")){
+
+        }
         int selectionID = NumberUtils.parseInt(args[1]);
         BlockSelection blockSelection = null;
         for (BlockSelection selection : user.getSelections()) {
@@ -96,22 +99,26 @@ public class CmdCrumbs extends CommandExecutor {
                      */
                     //System.out.println(yDiff);
                     for (int j = 0; j < yDiff; j++) {
-                        world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                       // world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
                     /*
                      * playEffect for X values
                      */
                     for (int j = 0; j < xDiff ; j++) {
-                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
-                    }
-
-
-                    for (int j = 0; j < xDiff ; j++) {
-                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                        //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
                     for (int l = 0; l > zDiff; l--) {
-                        world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
+                        );
+                        //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
 
@@ -123,18 +130,27 @@ public class CmdCrumbs extends CommandExecutor {
                      * playEffect for Y values
                      */
                     for (int j = 0; j > yDiff; j--) {
-                        world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                        //world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
                     /*
                      * playEffect for X values
                      */
                     for (int j = 0; j > xDiff ; j--) {
-                        world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                        //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
                     for (int l = 0; l < zDiff; l++) {
-                        world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
+                        );
+                        //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                     }
 
 
@@ -160,40 +176,51 @@ public class CmdCrumbs extends CommandExecutor {
                     double z1 = finalExplodeLocation.getZ() - 0.5;
 
                     for (double i = 0; i < 1; i += 0.2) {
-                        PacketPlayOutWorldParticles p1 = new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0);
-                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(p1);
-//                        world.spigot().playEffect(new Location(world, x-i,y+1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x,y+1,z-i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//
-//
-//                        world.spigot().playEffect(new Location(world, x1+i,y+1,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x1,y+1,z1+i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//
-//                        world.spigot().playEffect(new Location(world, x-i,y,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x,y,z-i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//
-//
-//                        world.spigot().playEffect(new Location(world, x1+i,y,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x1,y,z1+i), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//
-//
-//                        world.spigot().playEffect(new Location(world, x,y+i,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x1,y+i,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x,y+i,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
-//                        world.spigot().playEffect(new Location(world, x1,y+i,z1), Effect.COLOURED_DUST, 0, data,0,0,0,0, 2 ,30);
 
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y+1, (float) ((float) z-i), r, g, b, (float) 1, 0)
+                        );
 
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y+1, (float) ((float) z1), r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y+1, (float) ((float) z1+i), r, g, b, (float) 1, 0)
+                        );
 
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y, (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
+                        );
 
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y, (float) ((float) z1), r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y, (float) ((float) z1+i), r, g, b, (float) 1, 0)
+                        );
+
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z1), r, g, b, (float) 1, 0)
+                        );
+                        ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y+i), (float) ((float) z1), r, g, b, (float) 1, 0)
+                        );
                     }
-
-
-
-
                 }
-
             }
-        }.runTaskTimer(plugin, 0, 20L);
+        }.runTaskTimer(plugin, 0, 10L);
 
 
         /*
