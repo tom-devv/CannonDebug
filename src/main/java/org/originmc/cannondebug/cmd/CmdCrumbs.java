@@ -77,6 +77,9 @@ public class CmdCrumbs extends CommandExecutor {
             if(data == 2){
                 explodeLocation = locationList.get(locationList.size() -2);
             }
+//            if(tracker.getEntity().isDead() && data == 2){
+//                explodeLocation = locationList.get(locationList.size()-1);
+//            }
             int r = data == 2 ? 1/255 : 1;
             int g = 1/255;
             int b = data == 2 ? 1 :1/255;
@@ -181,12 +184,11 @@ public class CmdCrumbs extends CommandExecutor {
                         for (double i = 0; i < 1; i += 0.2) {
 
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.SMOKE_NORMAL, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
                             );
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y+1, (float) ((float) z-i), r, g, b, (float) 1, 0)
                             );
-
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y+1, (float) ((float) z1), r, g, b, (float) 1, 0)
                             );
@@ -195,18 +197,19 @@ public class CmdCrumbs extends CommandExecutor {
                             );
 
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y, (float) ((float) z), r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y, (float) z, r, g, b, (float) 1, 0)
                             );
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.SMOKE_NORMAL, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
                             );
-
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x1+i), (float) y, (float) ((float) z1), r, g, b, (float) 1, 0)
                             );
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) y, (float) ((float) z1+i), r, g, b, (float) 1, 0)
                             );
+
+                            // Edges
 
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+i), (float) ((float) z), r, g, b, (float) 1, 0)
