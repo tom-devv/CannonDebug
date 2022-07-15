@@ -93,6 +93,8 @@ public final class CannonDebugPlugin extends JavaPlugin implements Runnable {
     @Override
     public void onEnable() {
         instance = this;
+        this.getConfig().options().copyDefaults();
+        this.saveDefaultConfig();
         configuration = new Configuration(this);
         configuration.loadConfiguration();
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
