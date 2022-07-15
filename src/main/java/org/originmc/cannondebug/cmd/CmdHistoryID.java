@@ -226,7 +226,7 @@ public final class CmdHistoryID extends CommandExecutor {
             .formattedTooltip(
                     new FancyMessage("Click this to activate crumbs for 15 seconds").color(WHITE)
             )
-            .command("/c crumbs " + id + " 15")
+            .command("/c crumbs " + id + " " + plugin.getConfig().getInt("settings.crumbs.default-seconds"))
             .then("]").color(DARK_GRAY);
 
 
