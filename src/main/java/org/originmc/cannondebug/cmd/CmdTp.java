@@ -1,5 +1,6 @@
 package org.originmc.cannondebug.cmd;
 
+import com.intellectualcrafters.plot.object.Plot;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -7,8 +8,11 @@ import org.bukkit.entity.Player;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
 import org.originmc.cannondebug.EntityTracker;
+import org.originmc.cannondebug.utils.FormatUtils;
 import org.originmc.cannondebug.utils.NumberUtils;
 import org.originmc.cannondebug.utils.PlotSquared;
+
+import java.util.List;
 
 public class CmdTp extends CommandExecutor {
 
@@ -48,7 +52,11 @@ public class CmdTp extends CommandExecutor {
                 location.setYaw(current.getYaw());
                 user.getBase().teleport(location);
             } else {
-                player.sendMessage(ChatColor.RED + "You cannot teleport here.");
+                Plot plot = PlotSquared.getPlot(location);
+                int plotX = plot.getId().x;
+                int plotY = plot.getId().y;
+                List<String> noTrusted = FormatUtils.replaceList(plugin.getConfig().getStringList("messages.teleport.cannot-tp"), "%plot_id%", (plotX + ";"+ plotY));
+                FormatUtils.sendMessage(sender, noTrusted);
             }
 
             return true;

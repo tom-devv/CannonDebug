@@ -31,6 +31,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
+import org.originmc.cannondebug.utils.FormatUtils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +55,7 @@ public final class CmdClear extends CommandExecutor {
             }
 
             // Send confirmation message.
-            sender.sendMessage(ChatColor.YELLOW + "History has been cleared.");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.clear.history"));
             return true;
         }
 
@@ -80,11 +81,10 @@ public final class CmdClear extends CommandExecutor {
                     }
                 }
             }
-
             user.getSelections().clear();
 
             // Send confirmation message.
-            sender.sendMessage(ChatColor.YELLOW + "Selections have been cleared.");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.clear.selections"));
             return true;
         }
         return false;

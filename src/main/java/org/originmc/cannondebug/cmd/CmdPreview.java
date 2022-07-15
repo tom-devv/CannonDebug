@@ -32,6 +32,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
+import org.originmc.cannondebug.utils.FormatUtils;
 
 public final class CmdPreview extends CommandExecutor {
 
@@ -63,7 +64,7 @@ public final class CmdPreview extends CommandExecutor {
         for (BlockSelection selection : user.getSelections()) {
             ((Player) sender).sendBlockChange(selection.getLocation(), Material.EMERALD_BLOCK, (byte) 0);
         }
-        sender.sendMessage(ChatColor.YELLOW + "Preview mode now enabled.");
+        FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.preview.enabled"));
     }
 
     private void previewOff() {
@@ -71,7 +72,7 @@ public final class CmdPreview extends CommandExecutor {
             Block block = selection.getLocation().getBlock();
             ((Player) sender).sendBlockChange(selection.getLocation(), block.getType(), block.getData());
         }
-        sender.sendMessage(ChatColor.YELLOW + "Preview mode now disabled.");
+        FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.preview.disabled"));
     }
 
 }

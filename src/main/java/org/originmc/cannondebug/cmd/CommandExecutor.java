@@ -32,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.originmc.cannondebug.CannonDebugPlugin;
 import org.originmc.cannondebug.FancyPager;
 import org.originmc.cannondebug.User;
+import org.originmc.cannondebug.utils.FormatUtils;
 
 public abstract class CommandExecutor {
 
@@ -61,7 +62,7 @@ public abstract class CommandExecutor {
     public boolean execute() {
         // Do nothing if the sender does not have permission.
         if (!sender.hasPermission(permission)) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission.");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.error.no-permission"));
             return true;
         }
 
@@ -74,7 +75,7 @@ public abstract class CommandExecutor {
         // Do nothing if sender has no user profile.
         user = plugin.getUser(((Player) sender).getUniqueId());
         if (user == null) {
-            sender.sendMessage(ChatColor.RED + "Player profile has not been loaded! Please re-log then retry.");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.error.no-profile"));
             return true;
         }
 

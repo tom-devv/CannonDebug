@@ -33,6 +33,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.originmc.cannondebug.CannonDebugPlugin;
+import org.originmc.cannondebug.utils.FormatUtils;
 import org.originmc.cannondebug.utils.NumberUtils;
 
 import static org.bukkit.ChatColor.GRAY;
@@ -50,7 +51,7 @@ public final class CmdRegion extends CommandExecutor {
         // Do nothing if WorldEdit is not installed.
         Plugin plugin = this.plugin.getServer().getPluginManager().getPlugin("WorldEdit");
         if (plugin == null) {
-            sender.sendMessage(RED + "WorldEdit was not found on this server!");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.error.worldedit.not-found"));
             return true;
         }
 
@@ -58,14 +59,14 @@ public final class CmdRegion extends CommandExecutor {
         WorldEditPlugin worldEdit = (WorldEditPlugin) plugin;
         Selection selection = worldEdit.getSelection((Player) sender);
         if (!(selection instanceof CuboidSelection)) {
-            sender.sendMessage(RED + "Region selected must be a cuboid!");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.region.not-cuboid"));
             return true;
         }
 
         // Do nothing if selection is too large.
         int maxArea = NumberUtils.getNumericalPerm(sender, "cannondebug.maxarea.");
         if (selection.getArea() > maxArea) {
-            sender.sendMessage(String.format(RED + "Region selected is too large! " + GRAY + "(Max area = %s blocks)", maxArea));
+            FormatUtils.sendMessage(sender, FormatUtils.replaceList(plugin.getConfig().getStringList("messages.region.too-large"), "%max%", String.valueOf(maxArea)));
             return true;
         }
 
@@ -81,7 +82,7 @@ public final class CmdRegion extends CommandExecutor {
         }
 
         // Send complete message.
-        sender.sendMessage(YELLOW + "All possible selections have been toggled.");
+        FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.region.complete"));
         return true;
     }
 

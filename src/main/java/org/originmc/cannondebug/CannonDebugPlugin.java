@@ -78,7 +78,9 @@ public final class CannonDebugPlugin extends JavaPlugin implements Runnable {
     private WorldListener worldListener;
 
     @Getter
-    private Configuration configuration;
+    public static Configuration configuration;
+
+    public static CannonDebugPlugin instance;
 
     public User getUser(UUID playerId) {
         // Return null if the player id has no user profile attached.
@@ -90,6 +92,7 @@ public final class CannonDebugPlugin extends JavaPlugin implements Runnable {
 
     @Override
     public void onEnable() {
+        instance = this;
         configuration = new Configuration(this);
         configuration.loadConfiguration();
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
@@ -201,4 +204,7 @@ public final class CannonDebugPlugin extends JavaPlugin implements Runnable {
                 EnumUtils.getFriendlyName(block.getType()), block.getX(), block.getY(), block.getZ(), selection.getId()));
     }
 
+    public static CannonDebugPlugin getInstance() {
+        return instance;
+    }
 }

@@ -35,6 +35,7 @@ import org.originmc.cannondebug.CannonDebugPlugin;
 import org.originmc.cannondebug.EntityTracker;
 import org.originmc.cannondebug.FancyPager;
 import org.originmc.cannondebug.utils.EnumUtils;
+import org.originmc.cannondebug.utils.FormatUtils;
 import org.originmc.cannondebug.utils.NumberUtils;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public final class CmdHistoryID extends CommandExecutor {
         int id = Math.abs(NumberUtils.parseInt(args[2]));
         BlockSelection selection = user.getSelection(id);
         if (selection == null) {
-            sender.sendMessage(ChatColor.RED + "You have input an invalid id!");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.error.invalid-id"));
             return true;
         }
 
@@ -65,7 +66,7 @@ public final class CmdHistoryID extends CommandExecutor {
         List<FancyMessage> lines = new ArrayList<>();
         EntityTracker tracker = selection.getTracker();
         if(tracker == null){
-            sender.sendMessage(ChatColor.RED + "That ID has not dispensed any TNT");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.error.invalid-selection"));
             return true;
         }
         int lifespan = tracker.getLocationHistory().size();

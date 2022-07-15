@@ -34,4 +34,10 @@ public class PlotSquared {
         return player != null && (plot.getOwners().contains(player.getUniqueId()) || plot.getTrusted().contains(player.getUniqueId()) || player.isOp() || player.hasPermission("cannondebug.*"));
     }
 
+    public static Plot getPlot(Location location){
+        com.intellectualcrafters.plot.object.Location plotLocation = new com.intellectualcrafters.plot.object.Location(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        return Plot.getPlot(plotLocation);
+    }
+
+
 }

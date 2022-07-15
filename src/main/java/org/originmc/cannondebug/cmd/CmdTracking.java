@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
 import org.originmc.cannondebug.EntityTracker;
+import org.originmc.cannondebug.utils.FormatUtils;
 import org.originmc.cannondebug.utils.NumberUtils;
 import org.originmc.cannondebug.utils.PlotSquared;
 
@@ -24,13 +25,13 @@ public class CmdTracking extends CommandExecutor {
         }
 
         boolean tracking = !plugin.getConfiguration().alternativeTracking;
-        plugin.getConfiguration().setBoolean("alternative-tracking", tracking);
+        plugin.getConfiguration().setBoolean("settings.alternative-tracking.enabled", tracking);
         plugin.getConfiguration().alternativeTracking = tracking;
 
         if (tracking) {
-            sender.sendMessage(ChatColor.GREEN + "Enabled Alternative Tracking");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.alternative-tracking.enabled"));
         } else {
-            sender.sendMessage(ChatColor.RED + "Disabled Alternative Tracking");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.alternative-tracking.disabled"));
         }
 
         return true;

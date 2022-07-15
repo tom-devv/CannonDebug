@@ -1,16 +1,19 @@
 package org.originmc.cannondebug.cmd;
 
+import com.sk89q.worldedit.internal.expression.runtime.For;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
 import org.originmc.cannondebug.EntityTracker;
+import org.originmc.cannondebug.utils.FormatUtils;
 import org.originmc.cannondebug.utils.NumberUtils;
 import org.originmc.cannondebug.utils.PlotSquared;
 
@@ -47,18 +50,12 @@ public class CmdCrumbs extends CommandExecutor {
 
         if(blockSelection == null) return false; //TODO add invalid BlockSelection message !
 
-        World world = blockSelection.getLocation().getWorld();
-
         EntityTracker entityTracker = blockSelection.getTracker();
 
         if(entityTracker == null){
-            sender.sendMessage(ChatColor.RED + "That ID has not dispensed any TNT");
+            FormatUtils.sendMessage(sender, plugin.getConfig().getStringList("messages.error.no-data"));
             return false;
         }
-
-
-
-
 
         final int time;
         if(args.length > 2){
@@ -66,24 +63,23 @@ public class CmdCrumbs extends CommandExecutor {
         } else {
             time = 5;
         }
-        int data = entityTracker.getEntityType().getName().equals("PrimedTnt") ? 1: 2;
 
-
-
-
-
-
-        int r = data == 2 ? 1/255 : 1;
-        int g = 1/255;
-        int b = data == 2 ? 1 :1/255;
+        // Second confirmation message
+        List<String> showingMessage =  FormatUtils.replaceList(plugin.getConfig().getStringList("messages.crumbs.showing"), "%selection%", selectionID);
+        FormatUtils.replaceList(showingMessage, "%seconds%", String.valueOf(time));
+        FormatUtils.sendMessage(sender, showingMessage);
 
 
         for (EntityTracker tracker: entityTrackers) {
             List<Location> locationList = tracker.getLocationHistory();
             Location explodeLocation = locationList.size() == 81 ? locationList.get(80) : null;
+            int data = tracker.getEntityType().getName().equals("PrimedTnt") ? 1: 2;
             if(data == 2){
                 explodeLocation = locationList.get(locationList.size() -2);
             }
+            int r = data == 2 ? 1/255 : 1;
+            int g = 1/255;
+            int b = data == 2 ? 1 :1/255;
             Location finalExplodeLocation = explodeLocation;
             new BukkitRunnable() {
                 int t = 1;
@@ -166,16 +162,10 @@ public class CmdCrumbs extends CommandExecutor {
                             );
                             //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                         }
-
-
-
-
                     }
                     if(t > time){
                         this.cancel();
                     }
-
-
                     /*
                      * Draw Boxes
                      */
@@ -191,7 +181,7 @@ public class CmdCrumbs extends CommandExecutor {
                         for (double i = 0; i < 1; i += 0.2) {
 
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.SMOKE_NORMAL, true, (float) ((float) x-i), (float) y+1, (float) z, r, g, b, (float) 1, 0)
                             );
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y+1, (float) ((float) z-i), r, g, b, (float) 1, 0)
@@ -208,7 +198,7 @@ public class CmdCrumbs extends CommandExecutor {
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x-i), (float) y, (float) ((float) z), r, g, b, (float) 1, 0)
                             );
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.SMOKE_NORMAL, true, ((float) x), (float) y, (float) ((float) z-i), r, g, b, (float) 1, 0)
                             );
 
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
@@ -234,6 +224,7 @@ public class CmdCrumbs extends CommandExecutor {
                     }
                 }
             }.runTaskTimer(plugin, 0, 10L);
+
         }
 
 

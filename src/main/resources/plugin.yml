@@ -30,6 +30,8 @@ permissions:
   cannondebug.select: {default: false}
   cannondebug.tp: {default: false}
   cannondebug.tracking: {default: false}
+  cannondebug.crumbs: {default: false}
+  cannondebug.compare: {default: false}
 
   cannondebug.history.*:
     default: false
@@ -54,6 +56,8 @@ permissions:
       cannondebug.region: true
       cannondebug.select: true
       cannondebug.tp: true
+      cannondebug.compare: true
+      cannondebug.crumbs: true
 
   cannondebug.admin:
     default: op

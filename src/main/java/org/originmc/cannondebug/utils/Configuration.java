@@ -18,7 +18,8 @@ public class Configuration {
         fileConfiguration.options().copyDefaults(true);
         plugin.saveConfig();
 
-        alternativeTracking = fileConfiguration.getBoolean("alternative-tracking", false);
+        alternativeTracking = fileConfiguration.getBoolean("settings.alternative-tracking.enabled", false);
+        //alternativeTracking = false;
     }
 
     public void setBoolean(String path, boolean val) {
