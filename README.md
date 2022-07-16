@@ -21,6 +21,8 @@
 * Sort and filter information by
   * Server tick
   * Entities' selection ID
+* Display particle breadcrumbs based on selections
+
 
 ## Download
 
