@@ -59,6 +59,8 @@ public class CmdCrumbs extends CommandExecutor {
             time = plugin.getConfig().getInt("settings.crumbs.default-seconds");
         }
 
+        double interval = plugin.getConfig().getDouble("settings.crumbs.interval");
+
         // Second confirmation message
         List<String> showingMessage =  FormatUtils.replaceList(plugin.getConfig().getStringList("messages.crumbs.showing"), "%selection%", selectionID);
         FormatUtils.replaceList(showingMessage, "%seconds%", String.valueOf(time));
@@ -103,11 +105,11 @@ public class CmdCrumbs extends CommandExecutor {
                         double zDiff = locationList.get(i).getZ() - locationList.get(i-1).getZ();
 
 
-                        double y = locationList.get(i-1).getY();
+                        double y = locationList.get(i-1).getY()+0.5;
                         double x = locationList.get(i-1).getX();
                         double z = locationList.get(i-1).getZ();
 
-                        double y1 = locationList.get(i).getY();
+                        double y1 = locationList.get(i).getY()+0.5;
                         double x1 = locationList.get(i).getX();
 
 
@@ -115,7 +117,7 @@ public class CmdCrumbs extends CommandExecutor {
                          * playEffect for Y values
                          */
                         //System.out.println(yDiff);
-                        for (int j = 0; j < yDiff; j++) {
+                        for (double j = 0; j < yDiff; j += interval) {
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
                             );
@@ -124,14 +126,14 @@ public class CmdCrumbs extends CommandExecutor {
                         /*
                          * playEffect for X values
                          */
-                        for (int j = 0; j < xDiff ; j++) {
+                        for (double j = 0; j < xDiff ; j += interval) {
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
                             );
                             //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                         }
 
-                        for (int l = 0; l > zDiff; l--) {
+                        for (double l = 0; l > zDiff; l -= interval) {
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
                             );
@@ -146,7 +148,7 @@ public class CmdCrumbs extends CommandExecutor {
                         /*
                          * playEffect for Y values
                          */
-                        for (int j = 0; j > yDiff; j--) {
+                        for (double j = 0; j > yDiff; j -= interval) {
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
                             );
@@ -156,14 +158,14 @@ public class CmdCrumbs extends CommandExecutor {
                         /*
                          * playEffect for X values
                          */
-                        for (int j = 0; j > xDiff ; j--) {
+                        for (double j = 0; j > xDiff ; j -= interval) {
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
                             );
                             //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
                         }
 
-                        for (int l = 0; l < zDiff; l++) {
+                        for (double l = 0; l < zDiff; l += interval) {
                             ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
                                     new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
                             );
@@ -185,7 +187,7 @@ public class CmdCrumbs extends CommandExecutor {
                             double x1 = finalExplodeLocation.getX() - 0.5;
                             double z1 = finalExplodeLocation.getZ() - 0.5;
 
-                            for (double i = 0; i < 1; i += 0.2) {
+                            for (double i = 0; i < 1; i += interval) {
 
                                 ((CraftPlayer) sender).getHandle().playerConnection.sendPacket(
                                         new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x - i), (float) y + 1, (float) z, r, g, b, (float) 1, 0)
