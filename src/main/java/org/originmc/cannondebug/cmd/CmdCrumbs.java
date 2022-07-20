@@ -6,6 +6,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
@@ -90,11 +91,16 @@ public class CmdCrumbs extends CommandExecutor {
             int g = 1/255;
             int b = data == 2 ? 1 :1/255;
             Location finalExplodeLocation = explodeLocation;
+
+            Player player = (Player) sender;
             new BukkitRunnable() {
+
+
                 int t = 1;
                 public void run(){
                     t++;
                     for (int i = 1; i < locationList.size(); i++) {
+                        Location location = player.getLocation();
 
                         /*
                          * Calculate the differences along the y x z axis in that order
@@ -112,32 +118,58 @@ public class CmdCrumbs extends CommandExecutor {
                         double y1 = locationList.get(i).getY()+0.5;
                         double x1 = locationList.get(i).getX();
 
+                        double px;
+                        double py;
+                        double pz;
+
+                        double distance;
+
+
 
                         /*
                          * playEffect for Y values
                          */
-                        //System.out.println(yDiff);
                         for (double j = 0; j < yDiff; j += interval) {
-                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
-                            );
-                            // world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                            px = x - location.getX();
+                            py = y+j - location.getY();
+                            pz = z - location.getZ();
+                            distance = Math.sqrt((px * px) + (py * py) + (pz * pz));
+                            if(distance < 50){
+                                ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                        new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
+                                );
+                            }
+
+
                         }
                         /*
                          * playEffect for X values
                          */
                         for (double j = 0; j < xDiff ; j += interval) {
-                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
-                            );
-                            //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                            px = x+j - location.getX();
+                            py = y1 - location.getY();
+                            pz = z - location.getZ();
+                            distance = Math.sqrt((px * px) + (py * py) + (pz * pz));
+                            if(distance < 50){
+                                ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                        new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                                );
+                            }
+
                         }
 
                         for (double l = 0; l > zDiff; l -= interval) {
-                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
-                            );
-                            //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+                            px = x1 - location.getX();
+                            py = y1 - location.getY();
+                            pz = z+l -location.getZ();
+                            distance = Math.sqrt((px * px) + (py * py) + (pz * pz));
+                            if(distance < 50){
+                                ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                        new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
+                                );
+                            }
+
+
                         }
 
 
@@ -149,27 +181,48 @@ public class CmdCrumbs extends CommandExecutor {
                          * playEffect for Y values
                          */
                         for (double j = 0; j > yDiff; j -= interval) {
-                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
-                            );
-                            //world.spigot().playEffect(new Location(world, x,y+j,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+
+                            px = x - location.getX();
+                            py = y+j - location.getY();
+                            pz = z - location.getZ();
+                            distance = Math.sqrt((px * px) + (py * py) + (pz * pz));
+                            if(distance < 50) {
+                                ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                        new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x), (float) ((float) y+j), (float) ((float) z), r, g, b, (float) 1, 0)
+                                );
+                            }
+
                         }
 
                         /*
                          * playEffect for X values
                          */
                         for (double j = 0; j > xDiff ; j -= interval) {
-                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
-                            );
-                            //world.spigot().playEffect(new Location(world, x+j,y1,z), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+
+                            px = x+j - location.getX();
+                            py = y1 - location.getY();
+                            pz = z - location.getZ();
+                            distance = Math.sqrt((px * px) + (py * py) + (pz * pz));
+                            if(distance < 50) {
+                                ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                        new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, (float) ((float) x+j), (float) ((float) y1), (float) ((float) z), r, g, b, (float) 1, 0)
+                                );
+                            }
+
                         }
 
                         for (double l = 0; l < zDiff; l += interval) {
-                            ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
-                                    new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
-                            );
-                            //world.spigot().playEffect(new Location(world, x1,y1,z+l), Effect.COLOURED_DUST, 0, data,0,0,0,0, 10 ,30);
+
+                            px = x1 - location.getX();
+                            py = y1 - location.getY();
+                            pz = z+l -location.getZ();
+                            distance = Math.sqrt((px * px) + (py * py) + (pz * pz));
+                            if(distance < 50) {
+                                ((CraftPlayer)sender).getHandle().playerConnection.sendPacket(
+                                        new PacketPlayOutWorldParticles(EnumParticle.REDSTONE, true, ((float) x1), (float) ((float) y1), (float) ((float) z+l), r, g, b, (float) 1, 0)
+                                );
+                            }
+
                         }
                     }
                     if(t > time *2){
@@ -240,7 +293,19 @@ public class CmdCrumbs extends CommandExecutor {
 
 
 
+
         return true;
+    }
+
+    public double calculateDistanceBetweenPoints(
+            double x1,
+            double y1,
+            double z1,
+            double x2,
+            double y2,
+            double z2
+    ) {
+        return Math.sqrt((y2 - y1) * (y2 - y1)  + (x2 - x1) * (x2 - x1) + (z2 - z1) * (z2 - z1));
     }
 
 }
