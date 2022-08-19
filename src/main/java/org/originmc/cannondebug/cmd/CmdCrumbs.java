@@ -7,6 +7,8 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.originmc.cannondebug.BlockSelection;
 import org.originmc.cannondebug.CannonDebugPlugin;
@@ -27,6 +29,7 @@ public class CmdCrumbs extends CommandExecutor {
     public boolean perform() {
 
         List<EntityTracker> entityTrackers = new ArrayList<>();
+
 
         String selectionID = args[1].equalsIgnoreCase("all") ? "all" : args[1];
         BlockSelection blockSelection = null;

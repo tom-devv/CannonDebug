@@ -54,6 +54,8 @@ public enum CommandType {
 
     COMPARE(CmdCompare.class, new String[]{"compare", "comp"}),
 
+    EXPOSURE(CmdExposure.class, new String[]{"exposure"}),
+
     TRACKING(CmdTracking.class, new String[] {"tracking"});
 
     private static final Map<String, CommandType> BY_ALIAS = new HashMap<>();
