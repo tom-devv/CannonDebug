@@ -2,6 +2,8 @@
 
 *Best cannon debugger out there!*
 
+Forked from github.com/Samsuik/CannonDebug
+
 ## Supports
 
 * WorldEdit 5.x -> 6.x
