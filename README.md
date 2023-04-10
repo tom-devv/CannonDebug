@@ -2,7 +2,7 @@
 
 *Best cannon debugger out there!*
 
-Forked from github.com/Samsuik/CannonDebug
+Forked from (Samsuik)[https://github.com/Samsuik/CannonDebug]
 
 ## Supports
 
